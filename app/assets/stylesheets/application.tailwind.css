@@ -1,0 +1,5 @@
+/* Entry point for your PostCSS build */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
