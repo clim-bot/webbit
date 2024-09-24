@@ -66,3 +66,6 @@ gem "devise", "~> 4.9"
 
 # For manipulating images
 gem "image_processing", "~> 1.13"
+
+# For rendering svg files
+gem "inline_svg", "~> 1.10"
