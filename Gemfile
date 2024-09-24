@@ -61,4 +61,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
+# For authentication
 gem "devise", "~> 4.9"
+
+# For manipulating images
+gem "image_processing", "~> 1.13"
