@@ -113,6 +113,7 @@ GEM
     ffi (1.17.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    htmlbeautifier (1.4.3)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     image_processing (1.13.0)
@@ -320,6 +321,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   error_highlight (>= 0.4.0)
+  htmlbeautifier (~> 1.4)
   image_processing (~> 1.13)
   importmap-rails
   inline_svg (~> 1.10)

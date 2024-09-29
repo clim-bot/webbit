@@ -69,3 +69,5 @@ gem "image_processing", "~> 1.13"
 
 # For rendering svg files
 gem "inline_svg", "~> 1.10"
+
+gem "htmlbeautifier", "~> 1.4"

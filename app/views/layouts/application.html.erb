@@ -17,7 +17,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-200 relative h-screen overflow-x-hidden">
+  <body class="bg-gray-200 relative h-screen overflow-x-hidden accent-indigo-600">
 
     <% flash.each do | type, message| %>
       <% if type == "alert" %>
@@ -123,6 +123,8 @@
       </div>
       </div>
     </nav>
-    <%= yield %>
+    <div class="container mr-auto py-6 px-6">
+      <%= yield %>
+    </div>
   </body>
 </html>
