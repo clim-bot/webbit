@@ -49,20 +49,33 @@
       <div class="flex flex-wrap justify-start w-full lg:w-2/3 flex-1">
     
         <div class="flex flex-wrap items-center lg:flex-1 lg:space-x-6 lg:w-auto w-full">
-          <div class="lg:w-1/4 w-full lg:mb-0 mb-3">
-              <div class="relative">
-                <select class="select">
-                  <option>Community 1</option>
-                  <option>Community 2</option>
-                  <option>Community 3</option>
-                </select>
+            <% if @communities.any? %>
+              <div class="lg:w-1/4 w-full lg:mb-0 mb-3">
 
-                <div class="pointer-events-none absolute inset-y-5 right-2 flex items-center">
-                   <%= render_svg "icons/chevron-down", styles: "fill-current w-4 h-4 text-gray-500" %>
+                <div data-controller="dropdown" class="rounded bg-white text-gray-700 ml-1 hover:bg-gray-50 relative">
+
+                  <%= link_to "#", class: "border no-underline flex items-center justify-between text-gray-700 py-3 px-3 rounded border-gray-400", data: { action: "click->dropdown#toggle click@window->dropdown#hide" } do %>
+                    <span class="font-semibold text-sm"><%= content_for?(:community_label) ? yield(:community_label) : "Select a community" %></span>
+
+                    <div class="pointer-events-none absolute inset-y-5 right-2 flex items-center">
+                      <%= render_svg "icons/chevron-down", styles: "fill-current w-5 h-5 text-gray-500" %>
+                    </div>
+                  <% end %>
+
+                  <ul class="hidden absolute top-10 left-0 bg-white min-w-[250px] border border-gray-400 rounded shadow-lg divide-y" data-dropdown-target="menu">
+                    <% @communities.each do |community| %>
+                      <li>
+                        <%= link_to community, class: "bg-white rounded px-4 py-2 hover:bg-indigo-50 hover:text-indigo-700 flex items-center group" do %>
+                          <%= render_svg "icons/conversation", styles: "mr-2 fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
+                          <span>w/</span><%= community.name %>
+                        <% end %>
+                      </li>
+                    <% end %>
+                  </ul>
+
                 </div>
               </div>
-
-          </div>
+            <% end %>
 
 
           <div class="lg:flex-1 lg:w-auto w-full lg:mb-0 mb-3">
