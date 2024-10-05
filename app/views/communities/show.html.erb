@@ -1,10 +1,15 @@
 <% content_for :community_label, "w/#{@community.name}" %>
 
-<%= render @community %>
+<% content_for :primary_content do %>
+  <ul class="divide-y list-none">
+    <% @community.submissions.each_with_index do |submission, index| %>
+      <%= render "submissions/submission", submission: submission %>
+    <% end %>
+  </ul>
+<% end %>
 
-<div>
-  <%= link_to "Edit this community", edit_community_path(@community) %> |
-  <%= link_to "Back to communities", communities_path %>
+<% content_for :secondary_content do %>
+  <%= render "sidebar", community: @community %>
+<% end %>
 
-  <%= button_to "Destroy this community", @community, method: :delete %>
-</div>
+<%= render "basic_layout" %>

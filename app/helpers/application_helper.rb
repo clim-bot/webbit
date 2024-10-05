@@ -9,4 +9,7 @@ module ApplicationHelper
     inline_svg_tag(filename, options)
   end
 
+  def author_of?(resource)
+    user_signed_in? && current_user.id == resource.user_id
+  end
 end
