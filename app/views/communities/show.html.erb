@@ -1,11 +1,23 @@
 <% content_for :community_label, "w/#{@community.name}" %>
 
+<%= render "header", community: @community %>
+
 <% content_for :primary_content do %>
-  <ul class="divide-y list-none">
-    <% @community.submissions.each_with_index do |submission, index| %>
-      <%= render "submissions/submission", submission: submission %>
-    <% end %>
-  </ul>
+  <% if @community.submissions.any? %>
+    <ul class="divide-y list-none">
+      <% @community.submissions.each_with_index do |submission, index| %>
+        <%= render "submissions/submission", submission: submission %>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="p-10 text-center">
+      <div class="flex justify-center mb-3">
+        <%= render_svg "icons/empty" %>
+      </div>
+      <p class="mb-4">Wow such empty...</p>
+      <%= link_to "Create a new submission", new_submission_path, class: "btn btn-indigo" %>
+    </div>
+  <% end %>
 <% end %>
 
 <% content_for :secondary_content do %>

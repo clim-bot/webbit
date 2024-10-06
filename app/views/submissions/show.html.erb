@@ -1,10 +1,58 @@
 <% content_for :community_label, "w/#{@submission.community.name}" %>
 
-<%= render @submission %>
+<%= render "communities/header", community: @submission.community %>
 
-<div>
-  <%= link_to "Edit this submission", edit_submission_path(@submission) %> |
-  <%= link_to "Back to submissions", submissions_path %>
+<% content_for :primary_content do %>
+  <div class="flex flex-row justify-between">
+    <%= render "voting", submission: @submission %>
+    <div class="flex-1">
+      <p class="text-sm text-gray-600 mb-3">Posted by <%= link_to @submission.user.username, class: "underline" %> <%= time_ago_in_words(@submission.created_at) + " ago" %> </p>
+      <h1 class="font-bold text-3xl mb-6"><%= @submission.title %></h1>
 
-  <%= button_to "Destroy this submission", @submission, method: :delete %>
-</div>
+      <% if @submission.media.attached? %>
+        <% if @submission.media.video? %>
+          <%= video_tag @submission.media %>
+        <% else %>
+          <%= image_tag @submission.media, alt: @submission.title, class: "rounded" %>
+        <% end %>
+      <% end %>
+
+      <% if @submission.body? %>
+        <div class="prose prose-lg prose-indigo">
+          <%= simple_format @submission.body %>
+        </div>
+      <% end %>
+
+      <% if @submission.url? %>
+        <%= link_to truncate(@submission.url, length: 100), @submission.url, class: "text-gray-700 font-mono text-indigo-500 hover:underline", target: :_blank %>
+      <% end %>
+
+      <%# Submission data %>
+      <div class="flex items-center space-x-5 mt-6">
+        <div class="flex items-center space-x-2 mr-2">
+          <%= render_svg "icons/conversation", styles: "w-5 fill-current text-gray-500" %>
+          <p>3 comments</p>
+        </div>
+        <% if author_of?(@submission) %>
+          <%= link_to  edit_submission_path(@submission), class: "group" do %>
+            <span class="sr-only">Edit this submission</span>
+            <%= render_svg "icons/edit", styles: "w-5 fill-current text-gray-500 group-hover:text-indigo-600" %>
+          <% end %>
+
+          <%= button_to  submission_path(@submission), method: :delete, class: "group" do %>
+            <span class="sr-only">Delete this submission</span>
+            <%= render_svg "icons/delete", styles: "w-5 fill-current text-gray-500 mt-1 group-hover:text-indigo-600" %>
+          <% end %>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+
+<% end %>
+
+<% content_for :secondary_content do %>
+  <%= render "communities/sidebar", community: @submission.community %>
+<% end %>
+
+<%= render "basic_layout" %>

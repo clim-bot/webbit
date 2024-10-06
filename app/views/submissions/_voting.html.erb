@@ -1,0 +1,10 @@
+<div class="w-10 flex flex-col items-start">
+    <%= link_to "# ",class: "block text-center group" do %>
+      <%= render_svg "icons/up-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
+    <% end %>
+    <span class="text-gray-700 text-center block">123</span>
+
+    <%= link_to "#", class: "block text-center group"  do %>
+      <%= render_svg "icons/down-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
+    <% end %>
+</div>
