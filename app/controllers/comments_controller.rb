@@ -13,10 +13,10 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         format.turbo_stream
-        format.html { redirect_to submission_path(@submission), notice: "Comment was successfully created." }
+        format.html { redirect_to @submission, notice: "Comment was successfully created." }
       else
-        format.turbo_stream
-        format.html { redirect_to submission_path(@submission), alert: "Comment could not be created." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("#{dom_id(@submission)}_comments_form", partial: "comments/form", locals: { comment: @comment }) }
+        format.html { render :new }
       end
     end
   end
