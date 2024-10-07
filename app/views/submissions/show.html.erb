@@ -50,7 +50,9 @@
 
   <div class="mt-6 pt-6 border-t border-gray-300">
     <% if user_signed_in? %>
-      <%= render "comments/form" %>
+      <div id="<%= dom_id(@submission) %>_comments_form">
+        <%= render "comments/form", comment: Comment.new %>
+      </div>
     <% else %>
       <div class="bg-gray-50 rounded p-4 mt-6 text-center">
         <%= link_to "Login to reply", new_user_session_path, class: "text-indigo-600 underline" %>
@@ -59,7 +61,7 @@
 
     <h3 id="comments" class="font-bold mt-6">Comments</h3>
     <% if @submission.comments.any? %>
-      <div id="comments">
+      <div id="<%= dom_id(@submission) %>_comments">
         <%= render @submission.comments %>
       </div>
     <% else %>

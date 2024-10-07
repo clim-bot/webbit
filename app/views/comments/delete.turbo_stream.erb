@@ -1,0 +1,4 @@
+<%= turbo_stream.remove dom_id(@comment) %>
+<%= turbo_stream.replace "#{dom_id(@submission)}_comments_form" do %>
+  <%= render "comments/form", comment: Comment.new %>
+<% end %>

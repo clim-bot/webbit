@@ -10,10 +10,6 @@ class CommentsController < ApplicationController
     @comment = @submission.comments.new(comment_params)
     @comment.user = current_user
 
-    Rails.logger.debug "Submission: #{@submission.inspect}"
-    Rails.logger.debug "Comment: #{@comment.inspect}"
-    Rails.logger.debug "Params: #{params.inspect}"
-
     respond_to do |format|
       if @comment.save
         format.turbo_stream
@@ -29,9 +25,26 @@ class CommentsController < ApplicationController
   end
 
   def update
+    respond_to do |format|
+      if @comment.update(comment_params)
+        format.turbo_stream
+        format.html { redirect_to submission_path(@submission), notice: "Comment updated successfully" }
+      else
+        format.turbo_stream
+        format.html { redirect_to submission_path(@submission), alert: "Comment could not be updated." }
+      end
+    end
   end
 
   def destroy
+    @comment = Comment.find(params[:id])
+    @submission = @comment.submission
+    @comment.destroy
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to submission_path(@submission), notice: "Comment deleted successfully" }
+    end
   end
 
   def show
@@ -48,6 +61,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:reply)
+    params.require(:comment).permit(:reply, :submission_id)
   end
 end
