@@ -1,0 +1,15 @@
+<%= turbo_stream.remove dom_id(@comment) %>
+
+<%= turbo_stream.update "#{dom_id(@submission)}_comment_count" do %>
+  <p id="<%= dom_id(@submission) %>_comment_count"><%= pluralize(@submission.comments.size, 'comment') %></p>
+<% end %>
+
+<%= turbo_stream.replace "#{dom_id(@submission)}_comments_container" do %>
+  <% if @submission.comments.any? %>
+    <div id="<%= dom_id(@submission) %>_comments">
+      <%= render @submission.comments %>
+    </div>
+  <% else %>
+    <p id="<%= dom_id(@submission) %>_no_comments">No comments yet.</p>
+  <% end %>
+<% end %>

@@ -1,0 +1,19 @@
+<%= turbo_stream.remove dom_id(@comment) %>
+
+<%= turbo_stream.update "#{dom_id(@submission)}_comments_form" do %>
+  <%= render "comments/form", comment: Comment.new %>
+<% end %>
+
+<%= turbo_stream.replace "#{dom_id(@submission)}_comments" do %>
+  <% if @submission.comments.any? %>
+    <%= render @submission.comments %>
+  <% else %>
+    <div id="<%= dom_id(@submission) %>_no_comments" class="my-3">
+      No comments yet
+    </div>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "#{dom_id(@submission)}_comment_count" do %>
+  <p id="<%= dom_id(@submission) %>_comment_count"><%= pluralize(@submission.comments.size, 'comment') %></p>
+<% end %>

@@ -1,4 +1,4 @@
-<p class="text-sm text-gray-600 my-2">comment as <%= link_to current_user.username, class: "text-indigo-600 underline" %>
+<p class="text-sm text-gray-600 my-2">comment as <%= link_to current_user.username, "#",class: "text-indigo-600 underline" %>
 </p>
 
 <%= form_with(model: [@submission, comment]) do |f| %>
