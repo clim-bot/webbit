@@ -1,0 +1,17 @@
+<%= turbo_stream.append "#{dom_id(@submission)}_comments" do %>
+  <%= render @comment %>
+<% end %>
+
+<%= turbo_stream.update "#{dom_id(@submission)}_comments_form" do %>
+  <%= render "comments/form", comment: Comment.new %>
+<% end %>
+
+<%= turbo_stream.replace "#{dom_id(@submission)}_no_comments" do %>
+  <div id="<%= dom_id(@submission) %>_comments">
+    <%= render @submission.comments %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "#{dom_id(@submission)}_comment_count" do %>
+  <p id="<%= dom_id(@submission)%>_comment_count"><%= pluralize(@submission.comments.size, 'comment') %></p>
+<% end %>

@@ -60,14 +60,16 @@
       </div>
     <% end %>
 
-    <h3 id="comment_section" class="font-bold mt-6">Comments</h3>
-    <div id="<%= dom_id(@submission) %>_comments">
-      <% if @submission.comments.any? %>
+    <h3 id="comments" class="font-bold mt-6">Comments</h3>
+    <% if @submission.comments.any? %>
+      <div id="<%= dom_id(@submission) %>_comments">
         <%= render @submission.comments %>
-      <% else %>
-        <p class="text-gray-600 mt-6">No comments yet</p>
-      <% end %>
-    </div>
+      </div>
+    <% else %>
+      <div id="<%= dom_id(@submission) %>_no_comments" class="my-3">
+        No comments yet
+      </div>
+    <% end %>
   </div>
 
 <% end %>
