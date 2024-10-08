@@ -13,10 +13,10 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         format.turbo_stream
-        format.html { redirect_to submission_path(@submission), notice: "Comment created successfully" }
+        format.html { redirect_to @submission, notice: "Comment was successfully created." }
       else
-        format.turbo_stream
-        format.html { redirect_to submission_path(@submission), alert: "Comment could not be created." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("#{dom_id(@submission)}_comments_form", partial: "comments/form", locals: { comment: @comment }) }
+        format.html { render :new }
       end
     end
   end
@@ -44,18 +44,15 @@ class CommentsController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_submission
-      @submission = Submission.find(params[:submission_id])
-    end
+  def set_submission
+    @submission = Submission.find(params[:submission_id])
+  end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_comment
-      @comment = Comment.find(params[:id])
-    end
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def comment_params
-      params.require(:comment).permit(:reply, :submission_id)
-    end
+  def comment_params
+    params.require(:comment).permit(:reply, :submission_id)
+  end
 end
