@@ -6,7 +6,7 @@
   <div class="flex flex-row justify-between">
   <%= render "voting", submission: @submission %>
     <div class="flex-1">
-      <p class="text-sm text-gray-600 mb-3">Posted by <%= link_to @submission.user.username, class: "underline" %> <%= "#{time_ago_in_words(@submission.created_at)} ago" %> </p>
+      <p class="text-sm text-gray-600 mb-3">Posted by <%= link_to @submission.user.username, profile_path(@submission.user), class: "underline" %> <%= "#{time_ago_in_words(@submission.created_at)} ago" %> </p>
       <h1 class="font-bold text-3xl mb-6"><%= @submission.title %></h1>
       <p class="text-sm text-gray-600 mb-3">Posted by <%= @submission.user.username %> <%= "#{time_ago_in_words(@submission.created_at)} ago" %> </p>
 

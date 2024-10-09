@@ -1,0 +1,69 @@
+<%# Primary content section: Contains the user's profile information, submissions, and comments %>
+<% content_for :primary_content do %>
+  
+  <%# Display the username in a bold header %>
+  <h1 class="font-bold text-3xl pb-6 border-b mb-6"><%= @profile.username %></h1>
+
+  <%# Section for user submissions with an icon and title %>
+  <div class="flex items-center">
+    <%= render_svg "icons/user", styles: "w-5 h-5 text-indigo-600 fill-current flex-shrink-0 mr-2" %>
+    <h3 class="font-light mb-3 text-xl mt-2">Submissions</h3>
+  </div>
+
+  <%# List of user's submissions; each submission is rendered using a partial %>
+  <ul class="divide-y">
+    <% @submissions.each do |submission| %>
+      <%= render "submissions/submission", submission: submission %>
+    <% end %>
+  </ul>
+
+  <%# Horizontal rule to separate sections %>
+  <hr class="my-6" />
+
+  <%# Section for user comments with an icon and title %>
+  <div class="flex items-center">
+    <%= render_svg "icons/conversation", styles: "w-5 h-5 text-indigo-600 fill-current flex-shrink-0 mr-2" %>
+    <h3 class="font-light mb-3 text-xl mt-2">Comments</h3>
+  </div>
+
+  <%# List of user's comments; each comment is rendered using a partial %>
+  <ul class="divide-y">
+    <% @comments.each do |comment| %>
+      <%= render "profiles/comment", comment: comment %>
+    <% end %>
+  </ul>
+
+<% end %>
+
+<%# Secondary content section: Contains the user's profile avatar, info, and action buttons %>
+<% content_for :secondary_content do %>
+  
+  <div class="text-center">
+    
+    <%# Display user's avatar using Gravatar, centered %>
+    <div class="flex items-center justify-center mb-3">
+      <%= gravatar_for(@profile, class: "rounded-full w-20 h-20") %>
+    </div>
+    
+    <%# Display the username and join date %>
+    <p class="font-bold"><%= @profile.username %></p>
+    <p class="text-gray-600">Joined <%= @profile.created_at.to_formatted_s(:nice) %></p>
+
+    <%# Display action buttons based on user login status %>
+    <div class="mt-6">
+      <% if user_signed_in? %>
+        <%# Link to create a new submission if the user is signed in %>
+        <%= link_to "New submission", new_submission_path, class: "btn btn-indigo block w-full" %>
+      <% else %>
+        <%# Show login and signup buttons for non-logged-in users %>
+        <%= link_to "Login", new_user_session_path, class: "btn btn-outline block w-full mb-4" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-indigo block w-full" %>
+      <% end %>
+    </div>
+
+  </div>
+
+<% end %>
+
+<%# Render the basic layout which likely incorporates both the primary and secondary content %>
+<%= render "basic_layout" %>
