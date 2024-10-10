@@ -1,7 +1,15 @@
-<p class="text-sm text-gray-600 my-2">comment as <%= link_to current_user.username, profile_path(current_user),class: "text-indigo-600 underline" %>
+<%# Display the current user's name and link to their profile %>
+<p class="text-sm text-gray-600 my-2">
+  comment as <%= link_to current_user.username, profile_path(current_user), class: "text-indigo-600 underline" %>
 </p>
 
-<%= form_with(model: [@submission, comment]) do |f| %>
+<%# Comment submission form %>
+<%= form_with(model: [@submission, comment], local: true) do |f| %> <%# Passing the submission and the comment as nested resources %>
+  
+  <%# Text area for the comment reply %>
   <%= f.text_area :reply, class: "input min-h-[100px] resize-none", placeholder: "What are your thoughts?" %>
-  <%= f.submit class: "btn btn-indigo text-base font-normal mt-6" %>
+  
+  <%# Submit button for posting the comment %>
+  <%= f.submit "Post Comment", class: "btn btn-indigo text-base font-normal mt-6" %>
+
 <% end %>

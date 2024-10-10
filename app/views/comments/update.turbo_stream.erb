@@ -1,7 +1,9 @@
+<%# Turbo Stream to replace the existing comment with its updated version %>
 <%= turbo_stream.replace dom_id(@comment) do %>
-  <%= render "comments/comment", comment: @comment %>
+  <%= render "comments/comment", comment: @comment %> <%# Re-render the updated comment %>
 <% end %>
 
+<%# Turbo Stream to replace the comments form with a fresh form after the comment is submitted %>
 <%= turbo_stream.replace "#{dom_id(@submission)}_comments_form" do %>
-  <%= render "comments/form", comment: Comment.new %>
+  <%= render "comments/form", comment: Comment.new %> <%# Render a new empty comment form %>
 <% end %>

@@ -1,14 +1,22 @@
-<%= turbo_frame_tag comment do %>
+<%= turbo_frame_tag comment do %>  <%# Turbo Frame for the comment: This allows partial page updates for this specific comment %>
   <div class="border p-4 rounded my-4 flex items-start">
     <div>
+      <%# Display the comment author's username %>
       <p class="font-semibold"><%= comment.user.username %></p>
+
+      <%# Display the comment's body (reply) %>
       <div class="prose prose-indigo"><%= comment.reply %></div>
 
+      <%# Edit and Delete buttons, visible only if the current user is the author of the comment %>
       <% if author_of?(comment) %>
         <div class="flex items-end space-x-3">
+          
+          <%# Link to edit the comment: When clicked, this link will load the edit form in this Turbo Frame %>
           <%= link_to "Edit comment", edit_submission_comment_path(comment.submission, comment), class: "text-indigo-600 underline" %>
 
-          <%= button_to "Delete comment", submission_comment_path(comment.submission, comment), method: :delete, class: "text-indigo-600 underline"%>
+          <%# Button to delete the comment: Triggers a DELETE request %>
+          <%= button_to "Delete comment", submission_comment_path(comment.submission, comment), method: :delete, class: "text-indigo-600 underline" %>
+          
         </div>
       <% end %>
     </div>
