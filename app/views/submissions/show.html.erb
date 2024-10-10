@@ -1,15 +1,28 @@
+<%# Set the community label for the page header %>
 <% content_for :community_label, "w/#{@submission.community.name}" %>
 
+<%# Render the community header for the current submission's community %>
 <%= render "communities/header", community: @submission.community %>
 
+<%# Primary content section (main submission content) %>
 <% content_for :primary_content do %>
   <div class="flex flex-row justify-between">
-  <%= render "voting", submission: @submission %>
-    <div class="flex-1">
-      <p class="text-sm text-gray-600 mb-3">Posted by <%= link_to @submission.user.username, profile_path(@submission.user), class: "underline" %> <%= "#{time_ago_in_words(@submission.created_at)} ago" %> </p>
-      <h1 class="font-bold text-3xl mb-6"><%= @submission.title %></h1>
-      <p class="text-sm text-gray-600 mb-3">Posted by <%= @submission.user.username %> <%= "#{time_ago_in_words(@submission.created_at)} ago" %> </p>
+    
+    <%# Render the voting component for the submission (upvote/downvote) %>
+    <%= render "voting", submission: @submission %>
 
+    <div class="flex-1">
+
+      <%# Display submission details: username and time of posting %>
+      <p class="text-sm text-gray-600 mb-3">
+        Posted by <%= link_to @submission.user.username, profile_path(@submission.user), class: "underline" %> 
+        <%= "#{time_ago_in_words(@submission.created_at)} ago" %>
+      </p>
+
+      <%# Display the submission title %>
+      <h1 class="font-bold text-3xl mb-6"><%= @submission.title %></h1>
+
+      <%# Media content: display video if media is a video, otherwise show image %>
       <% if @submission.media.attached? %>
         <% if @submission.media.video? %>
           <%= video_tag @submission.media %>
@@ -18,21 +31,30 @@
         <% end %>
       <% end %>
 
+      <%# Submission body (text content), formatted with simple formatting (paragraphs) %>
       <% if @submission.body? %>
         <div class="prose prose-lg prose-indigo">
           <%= simple_format @submission.body %>
         </div>
       <% end %>
 
+      <%# Display URL if the submission contains one, truncate it for better layout %>
       <% if @submission.url? %>
         <%= link_to truncate(@submission.url, length: 100), @submission.url, class: "text-gray-700 font-mono text-indigo-500 hover:underline", target: :_blank %>
       <% end %>
 
+      <%# Comments and submission actions (edit/delete) %>
       <div class="flex items-center space-x-5 mt-6">
+        
+        <%# Display comment count with icon %>
         <div class="flex items-center space-x-2 mr-2">
           <%= render_svg "icons/conversation", styles: "w-5 fill-current text-gray-500" %>
-          <p id="<%= dom_id(@submission)%>_comment_count"><%= pluralize(@submission.comments.size, 'comment') %></p>
+          <p id="<%= dom_id(@submission) %>_comment_count">
+            <%= pluralize(@submission.comments.size, 'comment') %>
+          </p>
         </div>
+
+        <%# Edit and delete actions for submission (only visible to the author) %>
         <% if author_of?(@submission) %>
           <%= link_to edit_submission_path(@submission), class: "group" do %>
             <span class="sr-only">Edit this submission</span>
@@ -48,7 +70,10 @@
     </div>
   </div>
 
+  <%# Comment form and comments section %>
   <div class="mt-6 pt-6 border-t border-gray-300">
+
+    <%# If the user is signed in, show the comment form; otherwise, prompt to log in %>
     <% if user_signed_in? %>
       <div id="<%= dom_id(@submission) %>_comments_form">
         <%= render "comments/form", comment: Comment.new %>
@@ -59,7 +84,10 @@
       </div>
     <% end %>
 
+    <%# Comments section header %>
     <h3 id="comments" class="font-bold mt-6">Comments</h3>
+
+    <%# Display the list of comments or a message if there are no comments yet %>
     <div id="<%= dom_id(@submission) %>_comments_container">
       <% if @submission.comments.any? %>
         <div id="<%= dom_id(@submission) %>_comments">
@@ -72,8 +100,10 @@
   </div>
 <% end %>
 
+<%# Secondary content section (sidebar with community details) %>
 <% content_for :secondary_content do %>
   <%= render "communities/sidebar", community: @submission.community %>
 <% end %>
 
+<%# Render the basic layout, which incorporates both primary and secondary content %>
 <%= render "basic_layout" %>

@@ -1,12 +1,15 @@
+<%# Turbo Stream to remove the comment element from the DOM %>
 <%= turbo_stream.remove dom_id(@comment) %>
 
+<%# Turbo Stream to refresh the comment form after submission or deletion %>
 <%= turbo_stream.update "#{dom_id(@submission)}_comments_form" do %>
-  <%= render "comments/form", comment: Comment.new %>
+  <%= render "comments/form", comment: Comment.new %> <%# Render a fresh comment form %>
 <% end %>
 
+<%# Turbo Stream to replace the comments section with either the list of comments or a message if none exist %>
 <%= turbo_stream.replace "#{dom_id(@submission)}_comments" do %>
   <% if @submission.comments.any? %>
-    <%= render @submission.comments %>
+    <%= render @submission.comments %> <%# Render all comments if they exist %>
   <% else %>
     <div id="<%= dom_id(@submission) %>_no_comments" class="my-3">
       No comments yet
@@ -14,6 +17,9 @@
   <% end %>
 <% end %>
 
+<%# Turbo Stream to update the comment count dynamically after changes (addition or deletion) %>
 <%= turbo_stream.replace "#{dom_id(@submission)}_comment_count" do %>
-  <p id="<%= dom_id(@submission) %>_comment_count"><%= pluralize(@submission.comments.size, 'comment') %></p>
+  <p id="<%= dom_id(@submission) %>_comment_count">
+    <%= pluralize(@submission.comments.size, 'comment') %> <%# Pluralizes the comment count %>
+  </p>
 <% end %>

@@ -1,3 +1,7 @@
+<%# Turbo Frame for the comment: This ensures that only the comment form is updated dynamically %>
 <%= turbo_frame_tag @comment do %>
+  
+  <%# Render the form for editing the comment. The @comment variable contains the comment being edited %>
   <%= render "comments/form", comment: @comment %>
+
 <% end %>

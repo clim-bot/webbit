@@ -1,17 +1,23 @@
+<%# Append the new comment to the comments list %>
 <%= turbo_stream.append "#{dom_id(@submission)}_comments" do %>
   <%= render @comment %>
 <% end %>
 
+<%# Update the comment form with a fresh form (clearing the previous input after submission) %>
 <%= turbo_stream.update "#{dom_id(@submission)}_comments_form" do %>
   <%= render "comments/form", comment: Comment.new %>
 <% end %>
 
+<%# If this is the first comment, replace the "No comments yet" message with the comments list %>
 <%= turbo_stream.replace "#{dom_id(@submission)}_no_comments" do %>
   <div id="<%= dom_id(@submission) %>_comments">
     <%= render @submission.comments %>
   </div>
 <% end %>
 
+<%# Update the comment count dynamically after adding a new comment %>
 <%= turbo_stream.replace "#{dom_id(@submission)}_comment_count" do %>
-  <p id="<%= dom_id(@submission)%>_comment_count"><%= pluralize(@submission.comments.size, 'comment') %></p>
+  <p id="<%= dom_id(@submission)%>_comment_count">
+    <%= pluralize(@submission.comments.size, 'comment') %>
+  </p>
 <% end %>
