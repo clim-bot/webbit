@@ -1,0 +1,39 @@
+<!-- Outer container for the upvote, vote count, and downvote buttons -->
+<div class="w-10 flex flex-col items-center"> <!-- Changed items-start to items-center for better centering -->
+  <% if user_signed_in? %>
+    <!-- Upvote button: This is a form button that makes a PUT request to upvote the comment -->
+    <%= button_to upvote_submission_comment_path(submission, comment), method: :put, class: "block text-center group" do %>
+      <!-- Render the up-vote icon with hover color change -->
+      <%= render_svg "icons/up-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
+    <% end %>
+
+    <!-- Vote count: Centered using flex utilities, margin adjusted for better alignment -->
+    <div class="flex justify-center mt-1"> <!-- Changed pl-1 to mt-1 to add spacing between vote count and buttons -->
+      <!-- Dynamic vote count display -->
+      <span class="text-gray-700 text-center block" id="<%= dom_id(comment)%>_votes_count"><%= comment.total_vote_count %></span>
+    </div>
+
+    <!-- Downvote button: This is a form button that makes a PUT request to downvote the comment -->
+    <%= button_to downvote_submission_comment_path(submission, comment), method: :put, class: "block text-center group mt-1" do %>
+      <!-- Render the down-vote icon with hover color change -->
+      <%= render_svg "icons/down-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
+    <% end %>
+  <% else %>
+    <!-- If the user is not signed in, redirect them to sign-in on upvote click -->
+    <%= link_to new_user_session_path, class: "block text-center group", data: { turbo: false } do %>
+      <!-- Render the up-vote icon for non-signed-in users -->
+      <%= render_svg "icons/up-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
+    <% end %>
+
+    <!-- Vote count for non-signed-in users -->
+    <div class="flex justify-center mt-1"> <!-- Spacing for the vote count -->
+      <span class="text-gray-700 text-center block" id="<%= dom_id(comment)%>_votes_count"><%= comment.total_vote_count %></span>
+    </div>
+
+    <!-- If the user is not signed in, redirect them to sign-in on downvote click -->
+    <%= link_to new_user_session_path, class: "block text-center group mt-1", data: { turbo: false } do %>
+      <!-- Render the down-vote icon for non-signed-in users -->
+      <%= render_svg "icons/down-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
+    <% end %>
+  <% end %>
+</div>

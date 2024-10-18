@@ -1,25 +1,38 @@
-<div class="w-10 flex flex-col items-start">
+<!-- Outer container for the upvote, vote count, and downvote buttons -->
+<div class="w-10 flex flex-col items-center"> <!-- Changed items-start to items-center for better centering -->
   <% if user_signed_in? %>
-    <%= button_to upvote_submission_path(submission),method: :put, class: "block text-center group" do %>
+    <!-- Upvote button: PUT request to upvote the submission -->
+    <%= button_to upvote_submission_path(submission), method: :put, class: "block text-center group" do %>
+      <!-- Render the up-vote icon with hover effect -->
       <%= render_svg "icons/up-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
     <% end %>
-    <div class="flex justify-center pl-1">
+
+    <!-- Vote count: Centered using flex utilities, adjusted margin for better alignment -->
+    <div class="flex justify-center mt-1"> <!-- Changed pl-1 to mt-1 to space between buttons and vote count -->
+      <!-- Display total votes for the submission -->
       <span class="text-gray-700 text-center block" id="<%= dom_id(submission)%>_votes_count"><%= submission.total_vote_count %></span>
     </div>
 
-    <%= button_to downvote_submission_path(submission), method: :put, class: "block text-center group"  do %>
+    <!-- Downvote button: PUT request to downvote the submission -->
+    <%= button_to downvote_submission_path(submission), method: :put, class: "block text-center group mt-1" do %>
+      <!-- Render the down-vote icon with hover effect -->
       <%= render_svg "icons/down-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
     <% end %>
   <% else %>
-
+    <!-- If user is not signed in, show the upvote button linking to the login page -->
     <%= link_to new_user_session_path, class: "block text-center group" do %>
+      <!-- Render the up-vote icon for non-signed-in users -->
       <%= render_svg "icons/up-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
     <% end %>
-    <div class="flex justify-center pl-1">
+
+    <!-- Display vote count for non-signed-in users -->
+    <div class="flex justify-center mt-1"> <!-- Adjusted spacing -->
       <span class="text-gray-700 text-center block" id="<%= dom_id(submission)%>_votes_count"><%= submission.total_vote_count %></span>
     </div>
 
-    <%= link_to new_user_session_path, class: "block text-center"  do %>
+    <!-- If user is not signed in, show the downvote button linking to the login page -->
+    <%= link_to new_user_session_path, class: "block text-center group mt-1" do %>
+      <!-- Render the down-vote icon for non-signed-in users -->
       <%= render_svg "icons/down-vote", styles: "fill-current text-gray-500 w-4 h-4 group-hover:text-indigo-600" %>
     <% end %>
   <% end %>
