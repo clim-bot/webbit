@@ -9,6 +9,7 @@ class CommunitiesController < ApplicationController
 
   # GET /communities/1 or /communities/1.json
   def show
+    @subscription = @community.subscriptions.where(user: current_user).first
   end
 
   # GET /communities/new

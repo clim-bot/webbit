@@ -1,0 +1,8 @@
+<!-- Turbo Stream to replace the subscription actions (subscribe/unsubscribe button) -->
+<%= turbo_stream.replace "#{dom_id(@community)}_subscribe" do %>
+  <!-- Render the subscription actions partial (subscribe/unsubscribe button) -->
+  <%= render "subscriptions/actions", subscription: @subscription, community: @community, user: current_user %>
+<% end %>
+
+<!-- Turbo Stream to update the subscription count -->
+<%= turbo_stream.replace "#{dom_id(@community)}_subscriptions_count", @community.subscriptions.size %>

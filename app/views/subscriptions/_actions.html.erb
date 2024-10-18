@@ -1,0 +1,7 @@
+<% if user.communities.include?(community) && subscription.present? %>
+  <!-- If the user is already subscribed and the subscription exists, show the "Unsubscribe" button -->
+  <%= button_to "Unsubscribe", community_subscription_path(community, subscription), method: :delete, class: "btn btn-white w-full", data: { confirm: "Are you sure you want to unsubscribe?" } %>
+<% else %>
+  <!-- If the user is not subscribed, show the "Subscribe" button -->
+  <%= button_to "Subscribe", community_subscriptions_path(community), method: :post, class: "btn btn-indigo w-full" %>
+<% end %>

@@ -1,40 +1,80 @@
 <div class="rounded p-4">
+  <!-- Header Section: Displays community information (icon, name, title) and edit link for the author -->
   <div class="flex items-center justify-between pb-2 border-b mb-6">
     <div class="flex items-start flex-1">
+      <!-- Community Icon -->
       <%= render_svg "icons/conversation", styles: "w-4 fill-current text-indigo-600 mr-2 mt-1" %>
+
+      <!-- Community Name and Title -->
       <div>
-        <h1 class="font-mono text-sm leading0-tight">w/<%= community.name %></h1>
-        <h3 class="font-bold text-2xl leading0-tight"><%= community.title %></h3>
+        <!-- Community Name -->
+        <h1 class="font-mono text-sm leading-tight">w/<%= community.name %></h1>
+        
+        <!-- Community Title -->
+        <h3 class="font-bold text-2xl leading-tight"><%= community.title %></h3>
       </div>
     </div>
 
+    <!-- Edit link for the author of the community -->
     <% if author_of?(community) %>
       <%= link_to "Edit", edit_community_path(community), class: "underline text-indigo-600 hover:no-underline" %>
     <% end %>
   </div>
 
+  <!-- Stats Section: Displays number of submissions and subscribers -->
   <div class="grid grid-cols-2 gap-3 mb-6">
     <div>
+      <!-- Pluralized submission count -->
       <p><%= "Submission".pluralize(community.submissions.size) %></p>
+
+      <!-- Display submission count -->
       <p class="font-bold text-2xl"><%= community.submissions.size %></p>
     </div>
+
     <div>
+      <!-- Subscriber count label -->
       <p>Subscribers</p>
-      <p class="font-bold text-2xl">0</p>
+
+      <!-- Display subscriber count dynamically -->
+      <p class="font-bold text-2xl">
+        <span id="<%= dom_id(community) %>_subscriptions_count"><%= community.subscriptions.size %></span>
+      </p>
     </div>
   </div>
 
+  <!-- Horizontal separator -->
   <hr class="mb-6" />
 
+  <!-- Subscription Actions Section: For logged-in users, display subscription actions; otherwise, prompt login -->
+  <% if user_signed_in? %>
+    <!-- If signed in, render the subscription actions partial -->
+    <div id="<%= dom_id(@community)%>_subscribe">
+      <%= render "subscriptions/actions", community: @community, user: current_user, subscription: @subscription %>
+    </div>
+  <% else %>
+    <!-- If not signed in, show a link to log in and subscribe -->
+    <div>
+      <%= link_to "Login to subscribe", new_user_session_path, class: "btn btn-indigo w-full block text-center" %>
+    </div>
+  <% end %>
+
+  <!-- Horizontal separator -->
+  <hr class="mb-6" />
+
+  <!-- Description Section: Displays the community's description -->
   <div>
     <p>Description</p>
+    <!-- Prose styling for better typography, renders the community description -->
     <div class="prose prose-indigo my-3"><%= community.description %></div>
   </div>
 
+  <!-- Horizontal separator -->
   <hr class="mb-6" />
 
+  <!-- Sidebar Section: Displays the community's sidebar -->
   <div>
     <p>Sidebar</p>
+    <!-- Prose styling for the sidebar content -->
     <div class="prose prose-indigo my-3"><%= community.sidebar %></div>
   </div>
 </div>
