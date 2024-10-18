@@ -1,5 +1,6 @@
 <%= turbo_frame_tag comment do %>  <%# Turbo Frame for the comment: This allows partial page updates for this specific comment %>
   <div class="border p-4 rounded my-4 flex items-start">
+    <%= render "comments/voting", submission: @submission, comment: comment %>
     <div>
       <%# Display the comment author's username %>
       <p class="font-semibold"><%= comment.user.username %></p>
