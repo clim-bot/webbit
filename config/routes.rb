@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "submissions/unsubscribe/:unsubscribe_hash" => "submissions#unsubscribe", as: :comment_unsubscribe
+
   devise_for :users
   root "submissions#index"
 
