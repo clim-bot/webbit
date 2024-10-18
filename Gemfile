@@ -71,3 +71,7 @@ gem "image_processing", "~> 1.13"
 gem "inline_svg", "~> 1.10"
 
 gem "htmlbeautifier", "~> 1.4"
+
+gem "acts_as_votable", "~> 0.14.0"
+
+gem "mini_magick", "~> 4.11", ">= 4.11.0"
