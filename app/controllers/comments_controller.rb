@@ -1,10 +1,11 @@
 class CommentsController < ApplicationController
   include ActionView::RecordIdentifier
   before_action :authenticate_user!
-  before_action :set_comment, only: [ :edit, :update, :destroy, :show, :upvote, :downvote ]
+  before_action :set_comment, only: [:edit, :update, :destroy, :show, :upvote, :downvote]
   before_action :set_submission
 
   def new
+    @comment = @submission.comments.new
   end
 
   def create
@@ -17,7 +18,13 @@ class CommentsController < ApplicationController
         format.turbo_stream
         format.html { redirect_to @submission, notice: "Comment was successfully created." }
       else
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("#{dom_id(@submission)}_comments_form", partial: "comments/form", locals: { comment: @comment }) }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "#{dom_id(@submission)}_comments_form", 
+            partial: "comments/form", 
+            locals: { comment: @comment }
+          )
+        end
         format.html { render :new }
       end
     end
@@ -39,7 +46,6 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
     @comment.destroy
 
     respond_to do |format|
@@ -55,10 +61,11 @@ class CommentsController < ApplicationController
     respond_to do |format|
       unless current_user.voted_for? @comment
         @comment.upvote_by current_user
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("#{dom_id(@comment)}_votes_count", @comment.total_vote_count)
-      }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("#{dom_id(@comment)}_votes_count", @comment.total_vote_count)
+        end
       else
-        format.html { redirect_to submission_path(@submission), alert: "You already voted for this submission."}
+        format.html { redirect_to submission_path(@submission), alert: "You already voted for this comment." }
       end
     end
   end
@@ -67,10 +74,11 @@ class CommentsController < ApplicationController
     respond_to do |format|
       unless current_user.voted_for? @comment
         @comment.downvote_by current_user
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("#{dom_id(@comment)}_votes_count", @comment.total_vote_count)
-      }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("#{dom_id(@comment)}_votes_count", @comment.total_vote_count)
+        end
       else
-        format.html { redirect_to submission_path(@submission), alert: "You already voted for this submission."}
+        format.html { redirect_to submission_path(@submission), alert: "You already voted for this comment." }
       end
     end
   end
@@ -78,7 +86,9 @@ class CommentsController < ApplicationController
   private
 
   def send_comment_notification
+    # Ensure that the comment owner does not get a notification about their own comment
     unless @submission.user == @comment.user
+      # Check if the user has opted-in for comment notifications
       if @submission.user.comment_subscription?
         SubmissionMailer.with(comment: @comment, submission: @submission).new_response.deliver_later
       end
