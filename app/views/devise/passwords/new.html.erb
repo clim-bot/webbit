@@ -1,20 +1,30 @@
 <% content_for :form_wrap do %>
+  <!-- Heading for the forgot password form -->
   <h2 class="text-3xl font-bold mb-6">Forgot your password?</h2>
 
+  <!-- Devise form for requesting password reset instructions -->
+  <!-- The form method is set to 'POST' to submit the email for password reset -->
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo: false }) do |f| %>
+    
+    <!-- Render error messages if there are any validation issues -->
     <%= render "devise/shared/error_messages", resource: resource %>
 
+    <!-- Email input field for the user to enter their email address -->
     <div class="mb-6">
       <%= f.label :email %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
     </div>
 
+    <!-- Submit button to send the password reset instructions -->
     <%= f.submit "Send me reset password instructions", class: "btn btn-indigo w-full" %>
 
   <% end %>
 
+  <!-- Render Devise shared links (e.g., sign in, sign up, etc.) -->
   <div class="my-6">
     <%= render "devise/shared/links" %>
   </div>
 <% end %>
+
+<!-- Render the form wrapper -->
 <%= render "devise/shared/form_wrap" %>

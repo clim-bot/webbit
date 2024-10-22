@@ -1,5 +1,9 @@
+<!-- Display a welcome message with the user's email -->
 <p>Welcome <%= @email %>!</p>
 
+<!-- Instructional message for confirming the email -->
 <p>You can confirm your account email through the link below:</p>
 
+<!-- Confirmation link for the user to click and confirm their account -->
+<!-- 'confirmation_url' generates the confirmation link using the resource (typically the user) and the confirmation token -->
 <p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>

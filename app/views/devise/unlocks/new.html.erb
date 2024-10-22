@@ -1,16 +1,23 @@
 <h2>Resend unlock instructions</h2>
 
+<!-- Form to resend unlock instructions using Devise -->
 <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+
+  <!-- Display any error messages related to the form -->
   <%= render "devise/shared/error_messages", resource: resource %>
 
+  <!-- Email input field -->
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
+  <!-- Submit button to resend unlock instructions -->
   <div class="actions">
     <%= f.submit "Resend unlock instructions" %>
   </div>
+
 <% end %>
 
+<!-- Render Devise's shared links (e.g., login, sign up, etc.) -->
 <%= render "devise/shared/links" %>

@@ -1,23 +1,33 @@
 <% content_for :form_wrap do %>
+  <!-- Heading for the edit form, displaying the resource name (e.g., "User") -->
   <h2 class="text-3xl font-bold mb-6">Edit <%= resource_name.to_s.humanize %></h2>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put },data: { turbo: false} ) do |f| %>
+  <!-- Devise form for editing the user registration (updating account details) -->
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
+    
+    <!-- Render error messages if there are any validation issues -->
     <%= render "devise/shared/error_messages", resource: resource %>
 
+    <!-- Username input field -->
     <div class="mb-6">
       <%= f.label :username %>
       <%= f.text_field :username, autofocus: true, class: "input" %>
     </div>
 
+    <!-- Email input field -->
     <div class="mb-6">
       <%= f.label :email %>
       <%= f.email_field :email, autocomplete: "email", class: "input" %>
     </div>
 
+    <!-- Show pending email confirmation message if applicable -->
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-      <div class="italic my-3 text-gray-600">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+      <div class="italic my-3 text-gray-600">
+        Currently waiting confirmation for: <%= resource.unconfirmed_email %>
+      </div>
     <% end %>
 
+    <!-- Password input field (leave blank to keep current password) -->
     <div class="mb-6">
       <%= f.label :password %>
       <%= f.password_field :password, autocomplete: "new-password", class: "input" %>
@@ -27,40 +37,48 @@
       <% end %>
     </div>
 
+    <!-- Password confirmation input field -->
     <div class="mb-6">
       <%= f.label :password_confirmation %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input" %>
     </div>
 
+    <!-- Current password input field (required to confirm changes) -->
     <div class="mb-6">
       <%= f.label :current_password %>
       <%= f.password_field :current_password, autocomplete: "current-password", class: "input" %>
       <p class="text-gray-600 text-sm">(we need your current password to confirm your changes)</p>
     </div>
 
+    <!-- Subscription preferences section -->
     <div class="mb-6">
       <h3 class="mb-2 font-bold text-lg">Subscription preferences</h3>
-
       <div class="flex items-center">
         <%= f.check_box :comment_subscription, class: "fill-current text-indigo-600 rounded focus:ring-indigo-600" %>
         <%= f.label :comment_subscription, "Receive replies to comments via email", class: "mb-0 ml-2 font-normal text-gray-600 normal-case tracking-normal text-base" %>
       </div>
-
     </div>
 
+    <!-- Submit button to update the user information -->
     <%= f.submit "Update", class: "btn btn-indigo w-full" %>
 
   <% end %>
 
+  <!-- Horizontal line separator -->
   <hr class="my-6"/>
 
+  <!-- Section to cancel the user's account -->
   <h3 class="text-2xl font-bold mb-3">Cancel my account</h3>
+  <p>
+    <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-outline w-full" %>
+  </p>
 
-  <p><%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-outline w-full" %></p>
-
+  <!-- Link to go back to the previous page -->
   <div class="my-3">
     <%= link_to "Back", :back, class: "underline" %>
   </div>
+
 <% end %>
 
+<!-- Render the form wrap layout -->
 <%= render "devise/shared/form_wrap" %>

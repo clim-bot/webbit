@@ -1,17 +1,23 @@
 <% content_for :form_wrap do %>
+  <!-- Heading for the Log In form -->
   <h2 class="text-3xl font-bold mb-6">Log in</h2>
 
+  <!-- Devise form for logging in, submitting to session_path (creates a user session) -->
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
+
+    <!-- Email input field -->
     <div class="mb-6">
       <%= f.label :email, class: "label" %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
     </div>
 
+    <!-- Password input field -->
     <div class="mb-6">
       <%= f.label :password, class: "label" %>
       <%= f.password_field :password, autocomplete: "current-password", class: "input" %>
     </div>
 
+    <!-- Remember me checkbox (only if rememberable is enabled in Devise config) -->
     <% if devise_mapping.rememberable? %>
       <div class="mb-6 flex items-center">
         <%= f.check_box :remember_me %>
@@ -19,13 +25,16 @@
       </div>
     <% end %>
 
+    <!-- Submit button for logging in -->
     <%= f.submit "Log in", class: "btn btn-indigo w-full" %>
 
   <% end %>
 
+  <!-- Render Devise shared links (e.g., forgot password, sign up) -->
   <div class="my-6">
     <%= render "devise/shared/links" %>
   </div>
 <% end %>
 
+<!-- Render the form wrapper layout -->
 <%= render "devise/shared/form_wrap" %>

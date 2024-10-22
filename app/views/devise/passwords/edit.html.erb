@@ -1,25 +1,37 @@
 <% content_for :form_wrap do %>
+  <!-- Heading for the password change form -->
   <h2 class="text-3xl font-bold">Change your password</h2>
 
+  <!-- Devise form for changing the user's password -->
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
+    
+    <!-- Render error messages if there are any validation issues -->
     <%= render "devise/shared/error_messages", resource: resource %>
+
+    <!-- Hidden field to hold the reset password token (used for verification) -->
     <%= f.hidden_field :reset_password_token %>
 
+    <!-- Field for entering a new password -->
     <div class="mb-6">
       <%= f.label :password, "New password" %>
-      <%= f.password_field :password, autofocus: true, autocomplete: "new-password" class: "input" %>
+      <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "input" %> <!-- Fixed missing comma -->
+      
+      <!-- Display the minimum password length if defined -->
       <% if @minimum_password_length %>
         <p class="text-gray-600 text-sm"><em>(<%= @minimum_password_length %> characters minimum)</em></p>
       <% end %>
     </div>
 
+    <!-- Field for confirming the new password -->
     <div class="mb-6">
       <%= f.label :password_confirmation, "Confirm new password" %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input" %>
     </div>
 
+    <!-- Submit button to confirm the password change -->
     <%= f.submit "Change my password", class: "btn btn-indigo w-full" %>
   <% end %>
 
+  <!-- Render Devise shared links (e.g., login, sign up) -->
   <%= render "devise/shared/links" %>
 <% end %>
