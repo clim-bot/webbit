@@ -1,7 +1,11 @@
+<!-- Greeting the user with their email -->
 <p>Hello <%= @email %>!</p>
 
+<!-- Check if the resource (typically the user) has an unconfirmed email -->
 <% if @resource.try(:unconfirmed_email?) %>
+  <!-- If the email change is pending (unconfirmed), notify the user of the pending email change -->
   <p>We're contacting you to notify you that your email is being changed to <%= @resource.unconfirmed_email %>.</p>
 <% else %>
+  <!-- If there is no unconfirmed email, notify the user that their email has been changed -->
   <p>We're contacting you to notify you that your email has been changed to <%= @resource.email %>.</p>
 <% end %>

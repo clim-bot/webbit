@@ -1,16 +1,27 @@
 <h2>Resend confirmation instructions</h2>
 
+<!-- Form to resend confirmation instructions -->
+<!-- The form is using Devise's 'form_for' helper to handle the resource (user) -->
 <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+  
+  <!-- Render shared error messages if there are any validation issues -->
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
+    <!-- Label for the email input field -->
     <%= f.label :email %><br />
+    
+    <!-- Email input field with autofocus enabled and autocomplete for better user experience -->
+    <!-- If the user has a pending reconfirmation, display the unconfirmed email, otherwise show their confirmed email -->
     <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
   </div>
 
   <div class="actions">
+    <!-- Submit button to resend the confirmation instructions -->
     <%= f.submit "Resend confirmation instructions" %>
   </div>
+
 <% end %>
 
+<!-- Render additional shared links (e.g., sign in, sign up) provided by Devise -->
 <%= render "devise/shared/links" %>
