@@ -1,0 +1,51 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Heroku
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js (for Node apps, remove if not needed)
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Set up Ruby (for Ruby apps, remove if not needed)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1.2'
+
+      - name: Install dependencies
+        run: |
+          if [ -f "package.json" ]; then npm install; fi
+          if [ -f "Gemfile" ]; then bundle install; fi
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12 # Heroku deploy action
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: toffer.lim87@gmail.com
+
+  setup_db:
+    name: Setup PostgreSQL Database on Heroku
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ensure PostgreSQL addon is installed
+        run: |
+          heroku addons:create heroku-postgresql:hobby-dev --app ${{ secrets.HEROKU_APP_NAME }}
+
+      - name: Run migrations (if applicable)
+        run: |
+          heroku run rails db:migrate --app ${{ secrets.HEROKU_APP_NAME }}
+          heroku run rails db:seed --app ${{ secrets.HEROKU_APP_NAME }}
